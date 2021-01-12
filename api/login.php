@@ -3,6 +3,7 @@
 
  include_once("ResponseData.php");
 
+ session_start();
 
 //url: http://hostname/api/login.php
 //POST
@@ -73,6 +74,10 @@ if(isset($_GET['type']) && $_GET['type'] == "login"){
        echo ResponseData::ResponseSuccess('Đăng nhập thành công', $data);
 //        tao session
 //        put username to session
+           
+            $_SESSION['username'] = $username;
+
+              
     }
     
     else{
@@ -93,6 +98,24 @@ if(isset($_GET['type']) && $_GET['type'] == "login"){
 
 if(isset($_GET['type']) && $_GET['type'] == "checkLoggedIn"){
 
+ if (!isset($_SESSION['username'])) {
+    echo ResponseData::ResponseFail("Không có sesion");
+     
+   }else{
+     
+       $sesionname=$_SESSION['username'];
+    ///$sql = "SELECT * FROM user WHERE username = '$sesionname'";
+    $data = array();
+    $sql = "select * from user where username= '".$sesionname."' ";
+    $res = mysqli_query($conn,$sql);
+
+    while ($row = mysqli_fetch_assoc($res)) {
+        array_push($data, $row);
+    }
+    echo ResponseData::ResponseSuccess('Sesion', $data);
+
+   }
+
 
 }
 
@@ -106,7 +129,8 @@ if(isset($_GET['type']) && $_GET['type'] == "checkLoggedIn"){
 
 //Response 0 | 1
 if(isset($_GET['type']) && $_GET['type'] == "logout"){
-
+   
+    unset($_SESSION['username']);
 
 }
 
