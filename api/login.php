@@ -15,26 +15,6 @@
 //    'phone': '0334007127',
 //}
 
-//Response
-//{
-//    "errorCode": 0,
-//    "message": "Đăng ký thành công",
-//    "data": {
-//    "USERID": "3",
-//        "NAME": "Dong Nguyen",
-//        "USERNAME": "username3",
-//        "PASSWORD": "12345",
-//        "EMAIL": "abc@mail",
-//        "PHONE": "13233543"
-//    }
-//}
-
-//{
-//    "errorCode": 1,
-//    "message": "Tên tài khoản đã tồn tại trên hệ thống",
-//    "data": null
-//}
-
  if(isset($_POST['type']) && $_POST['type'] == "register") {
  	try {
  		global $conn;
@@ -65,12 +45,18 @@
 	}
  }
 
- 
+
+//url: http://hostname/api/login.php
+//GET
+//{
+//    'type': 'login',
+//    'username': 'username1',
+//    'password': 'meomeo'
+//}
+
 if(isset($_GET['type']) && $_GET['type'] == "login"){
     $username = trim($_GET['username']);
     $password = trim($_GET['password']);
-
-  
     
 
     if($username != "" && $password != "")
@@ -84,18 +70,47 @@ if(isset($_GET['type']) && $_GET['type'] == "login"){
             array_push($data, $row);
         }
 
-
        echo ResponseData::ResponseSuccess('Đăng nhập thành công', $data);
-    
-        
+//        tao session
+//        put username to session
     }
-    
     
     else{
         echo ResponseData::ResponseFail("Nhập vào đầy đủ tài khoản và mật khẩu");
     }
 
 }
+
+
+//url: http://hostname/api/login.php
+//GET
+//{
+//    'type': 'checkLoggedIn',
+//    'username': 'username1',
+//}
+
+//Response current logged in user | null
+
+if(isset($_GET['type']) && $_GET['type'] == "checkLoggedIn"){
+
+
+}
+
+
+//url: http://hostname/api/login.php
+//GET
+//{
+//    'type': 'logout',
+//    'username': 'username1',
+//}
+
+//Response 0 | 1
+if(isset($_GET['type']) && $_GET['type'] == "logout"){
+
+
+}
+
+
 
 
 ?>
