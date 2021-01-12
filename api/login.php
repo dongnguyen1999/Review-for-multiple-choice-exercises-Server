@@ -65,4 +65,28 @@
 	}
  }
 
+ 
+if(isset($_GET['type']) && $_GET['type'] == "login"){
+    $username = trim($_GET['username']);
+    $password = trim($_GET['password']);
+    if($username != "" && $password != "")
+    {
+        $resultArr = array();
+        $data = array();
+        $sql = "select * from user where username= '".$username."' and password= '".$password."'";
+        $res = mysqli_query($conn,$sql);
+
+        while ($row = mysqli_fetch_assoc($res)) {
+            array_push($data, $row);
+        }
+
+
+        echo ResponseData::ResponseSuccess('Đăng nhập thành công', $data);
+    }else{
+        echo ResponseData::ResponseFail("Thiếu dữ liệu. Vui lòng kiểm tra");
+    }
+
+}
+
+
 ?>
