@@ -69,6 +69,10 @@
 if(isset($_GET['type']) && $_GET['type'] == "login"){
     $username = trim($_GET['username']);
     $password = trim($_GET['password']);
+
+  
+    
+
     if($username != "" && $password != "")
     {
         $resultArr = array();
@@ -81,9 +85,14 @@ if(isset($_GET['type']) && $_GET['type'] == "login"){
         }
 
 
-        echo ResponseData::ResponseSuccess('Đăng nhập thành công', $data);
-    }else{
-        echo ResponseData::ResponseFail("Thiếu dữ liệu. Vui lòng kiểm tra");
+       echo ResponseData::ResponseSuccess('Đăng nhập thành công', $data);
+    
+        
+    }
+    
+    
+    else{
+        echo ResponseData::ResponseFail("Nhập vào đầy đủ tài khoản và mật khẩu");
     }
 
 }
