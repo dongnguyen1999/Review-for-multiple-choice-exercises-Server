@@ -13,7 +13,7 @@
 
 $resultArr = array();
 $data = array();
-$sql = "SELECT * FROM subjects";
+$sql = "SELECT * FROM subject";
 $res = mysqli_query($conn,$sql);
 
 while ($row = mysqli_fetch_assoc($res)) {
