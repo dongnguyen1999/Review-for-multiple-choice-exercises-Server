@@ -28,7 +28,6 @@
 
  if(isset($_GET['type']) && $_GET['type'] == "ListQuetstionByExam") {
 
-
     $resultArr = array();
     $data = array();
    $sql = "SELECT * FROM task inner join  exam  on exam.examID=task.examID inner join question  on question.questionID=task.questionID ";

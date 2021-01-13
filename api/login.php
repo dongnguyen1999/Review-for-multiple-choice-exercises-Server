@@ -70,14 +70,17 @@ if(isset($_GET['type']) && $_GET['type'] == "login"){
         while ($row = mysqli_fetch_assoc($res)) {
             array_push($data, $row);
         }
-
+        if ($conn->query($sql)->num_rows > 0) {
        echo ResponseData::ResponseSuccess('Đăng nhập thành công', $data);
 //        tao session
 //        put username to session
            
             $_SESSION['username'] = $username;
 
-              
+        }else{
+            echo ResponseData::ResponseFail("Đăng nhập thất bại");
+
+        }
     }
     
     else{
