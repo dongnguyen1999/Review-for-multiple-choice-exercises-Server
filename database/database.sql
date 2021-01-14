@@ -19,11 +19,12 @@ drop table if exists USER;
 /*==============================================================*/
 create table EXAM
 (
-   EXAMID               bigint not null AUTO_INCREMENT,
-   USERID               int not null,
-   CREATEDATE               timestamp not null,
-   DURATION                 int,
-   primary key (EXAMID)
+   examId               bigint not null AUTO_INCREMENT,
+   userId               int not null,
+   createDate               timestamp not null,
+   duration                 int,
+   score                    float,
+   primary key (examId)
 );
 
 /*==============================================================*/
@@ -31,15 +32,15 @@ create table EXAM
 /*==============================================================*/
 create table QUESTION
 (
-   QUESTIONID           bigint not null AUTO_INCREMENT,
-   SUBJECTID            int not null,
-   QUESTIONNAME         varchar(500) not null,
-   ANSWER1             varchar(500) not null,
-   ANSWER2              varchar(500) not null,
-   ANSWER3              varchar(500) not null,
-   ANSWER4              varchar(500) not null,
-   ANSWER               int not null,
-   primary key (QUESTIONID)
+   questionId           bigint not null AUTO_INCREMENT,
+   subjectId            int not null,
+   questionName         varchar(500) not null,
+   answer1             varchar(500) not null,
+   answer2              varchar(500) not null,
+   answer3              varchar(500) not null,
+   answer4              varchar(500) not null,
+   answer               int not null,
+   primary key (questionId)
 );
 
 /*==============================================================*/
@@ -47,9 +48,9 @@ create table QUESTION
 /*==============================================================*/
 create table SUBJECT
 (
-   SUBJECTID           int not null AUTO_INCREMENT,
-   SUBJECTNAME         varchar(50) not null,
-   primary key (SUBJECTID)
+   subjectId           int not null AUTO_INCREMENT,
+   subjectName         varchar(50) not null,
+   primary key (subjectId)
 );
 
 /*==============================================================*/
@@ -57,10 +58,10 @@ create table SUBJECT
 /*==============================================================*/
 create table TASK
 (
-   EXAMID               bigint not null AUTO_INCREMENT,
-   QUESTIONID           bigint not null,
-   ANSWERTASK           int,
-   primary key (EXAMID, QUESTIONID)
+   examId               bigint not null AUTO_INCREMENT,
+   questionId           bigint not null,
+   answerTask           int,
+   primary key (examId, questionId)
 );
 
 /*==============================================================*/
@@ -68,25 +69,25 @@ create table TASK
 /*==============================================================*/
 create table USER
 (
-   USERID               int not null AUTO_INCREMENT,
-   NAME                 varchar(100),
-   USERNAME             varchar(100) not null,
-   PASSWORD             varchar(100) not null,
-   EMAIL                varchar(100),
-   PHONE                numeric(8,0),
-   AVATAR               varchar(256),
-   primary key (USERID)
+   userId               int not null AUTO_INCREMENT,
+   email                varchar(100) not null,
+   password             varchar(100) not null,
+   name                 varchar(100),
+   phone                varchar(15),
+   avatar               varchar(256),
+   primary key (userId),
+   unique (email)
 );
 
-alter table EXAM add constraint FK_USER_CO_EXAM foreign key (USERID)
-      references USER (USERID) on delete restrict on update restrict;
+alter table EXAM add constraint FK_USER_CO_EXAM foreign key (userId)
+      references USER (userId) on delete restrict on update restrict;
 
-alter table QUESTION add constraint FK_QUESTION_THUOC_SUBJECT foreign key (SUBJECTID)
-      references SUBJECT (SUBJECTID) on delete restrict on update restrict;
+alter table QUESTION add constraint FK_QUESTION_THUOC_SUBJECT foreign key (subjectId)
+      references SUBJECT (subjectId) on delete restrict on update restrict;
 
-alter table TASK add constraint FK_EXAM_TASK foreign key (EXAMID)
-      references EXAM (EXAMID) on delete restrict on update restrict;
+alter table TASK add constraint FK_EXAM_TASK foreign key (examId)
+      references EXAM (examId) on delete restrict on update restrict;
 
-alter table TASK add constraint FK_TASK_QUESTION foreign key (QUESTIONID)
-      references QUESTION (QUESTIONID) on delete restrict on update restrict;
+alter table TASK add constraint FK_TASK_QUESTION foreign key (questionId)
+      references QUESTION (questionId) on delete restrict on update restrict;
 

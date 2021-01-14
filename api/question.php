@@ -1,45 +1,38 @@
 <?php
- include_once("dbconnect.php");
-
- include_once("ResponseData.php");
+include_once("../dao/dbconnect.php");
+include_once("../dao/QuestionDAO.php");
+include_once("../model/ResponseData.php");
 
 //url: http://hostname/api/question.php
 //GET
 //{
-//"subjectID":"mamon"
+//    "type": "list",
+//
+//    //Optional
+//    //Give just one of below
+//    'questionId': '1', //get info one question by its id
+//    "subjectId":"1", // list all question of a subject
+//    "examId": "2", // list all question of an exam
 //}
 
- if(isset($_GET['type']) && $_GET['type'] == "ListQuestionSubject") {
-
-         $subjectID = trim($_GET['subjectID']);
-         $resultArr = array();
-         $data = array();
-        $sql = "SELECT * FROM question WHERE SUBJECTSID = '$subjectID'";
-        $res = mysqli_query($conn,$sql);
-
-        while ($row = mysqli_fetch_assoc($res)) {
-            array_push($data, $row);
-            
-        }
-
-       echo ResponseData::ResponseSuccess('List danh sách câu hỏi theo môn', $data);
-  
- }
-
- if(isset($_GET['type']) && $_GET['type'] == "ListQuetstionByExam") {
-
-    $resultArr = array();
+if(isset($_GET['type']) && $_GET['type'] == "list") {
     $data = array();
-   $sql = "SELECT * FROM task inner join  exam  on exam.examID=task.examID inner join question  on question.questionID=task.questionID ";
-   $res = mysqli_query($conn,$sql);
+    if (isset($_GET['questionId'])) { // request with question id
+        $questionId = trim($_GET['questionId']);
+        $data = QuestionDAO::findById($questionId);
+    } else if (isset($_GET['subjectId'])) { // request with subject id
+        //select question by subject id
+        $subjectId = trim($_GET['subjectId']);
+        $data = QuestionDAO::findAllBySubjectId($subjectId);
+    } else if (isset($_GET['examId'])) { // request with exam id
+        //select question by exam id
+        $examId = trim($_GET['examId']);
+        $data = QuestionDAO::findAllByExamId($examId);
+    } else { // select all question in database
+        $data = QuestionDAO::findAll();
+    }
 
-   while ($row = mysqli_fetch_assoc($res)) {
-       array_push($data, $row);
-       
-   }
-
-  echo ResponseData::ResponseSuccess('List danh sách câu hỏi theo môn', $data);
-
+    echo ResponseData::ResponseSuccess('Truy vấn câu hỏi thành công', $data);
 }
  
  ?>

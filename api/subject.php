@@ -1,25 +1,27 @@
 <?php
- include_once("dbconnect.php");
-
- include_once("ResponseData.php");
- //url: http://hostname/api/subject.php
+include_once("../dao/dbconnect.php");
+include_once("../dao/SubjectDAO.php");
+include_once("../model/ResponseData.php");
+//url: http://hostname/api/subject.php
 //GET
 //{
-//"subjectID":"mamon"
+//    'type': 'list',
+//
+//    //Optional
+//    'subjectId': '1' // Get one subject info with its id
 //}
- if(isset($_GET['type']) && $_GET['type'] == "Listsubject") {
 
+//Get list of all subjects or get one subject detail
+if(isset($_GET['type']) && $_GET['type'] == "list") {
+    $data = array();
 
-$resultArr = array();
-$data = array();
-$sql = "SELECT * FROM subjects";
-$res = mysqli_query($conn,$sql);
+    if (isset($_GET['subjectId'])) {
+        $subjectId = $_GET['subjectId'];
+        $data = SubjectDAO::findById($subjectId);
+    } else {
+        $data = SubjectDAO::findAll();
+    }
 
-while ($row = mysqli_fetch_assoc($res)) {
-   array_push($data, $row);
+    echo ResponseData::ResponseSuccess('Truy vấn môn học thành công', $data);
 }
 
-echo ResponseData::ResponseSuccess('List danh sách môn', $data);
-
-}
-?>
