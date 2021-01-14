@@ -117,7 +117,7 @@ if(isset($_GET['type']) && $_GET['type'] == "currentUser"){
     if (!isset($_SESSION['username'])) {
         echo ResponseData::ResponseFail("Người dùng chưa đăng nhập");
     }else{
-     
+
         $sesionname=$_SESSION['username'];
         ///$sql = "SELECT * FROM user WHERE username = '$sesionname'";
         $sql = "select * from user where username= '".$sesionname."' ";
