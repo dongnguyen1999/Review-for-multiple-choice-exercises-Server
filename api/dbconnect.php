@@ -12,8 +12,4 @@
 		die('Connect error: '.mysqli_connect_errno());
 	}
 
-
-// 	mysqli_connect("localhost","root","") or die("Khong the ket noi co so du lieu");
-// 	mysqli_select_db("testdb") or die("Khong the chon co so du lieu");
-
 ?>
