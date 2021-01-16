@@ -15,11 +15,15 @@ include_once("../model/UserModel.php");
 //    'avatar': 'base64encodedimage'
 //    'phone': '0334007127',
 //}
-
+//
 // Register an user account
 // Register success response new inserted user info
 // Else return error message
+
+//if (!isset($_POST['type'])) echo "Không nhận được type";
+
 if(isset($_POST['type']) && $_POST['type'] == "register") {
+
     try {
 
         $user = new UserModel($_POST); // Map request data from $_POST
