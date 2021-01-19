@@ -3,6 +3,9 @@
 /* Created on:     1/12/2021 8:20:50 AM                         */
 /*==============================================================*/
 
+drop table if exists FACULTY;
+
+drop table if exists MAJOR;
 
 drop table if exists EXAM;
 
@@ -21,8 +24,11 @@ create table EXAM
 (
    examId               bigint not null AUTO_INCREMENT,
    userId               int not null,
+   subjectId            int not null,
    createDate               timestamp not null,
-   duration                 int,
+   closeDate                timestamp not null,
+   duration                 int not null,
+   nbQuestion               int not null,
    score                    float,
    primary key (examId)
 );
@@ -44,11 +50,34 @@ create table QUESTION
 );
 
 /*==============================================================*/
+/* Table: FACULTY                                             */
+/*==============================================================*/
+create table FACULTY
+(
+   facultyId           int not null AUTO_INCREMENT,
+   facultyName         varchar(256) not null,
+   primary key (facultyId)
+);
+
+
+/*==============================================================*/
+/* Table: MAJOR                                             */
+/*==============================================================*/
+create table MAJOR
+(
+   majorId           int not null AUTO_INCREMENT,
+   facultyId         int not null,
+   majorName         varchar(256) not null,
+   primary key (majorId)
+);
+
+/*==============================================================*/
 /* Table: SUBJECT                                             */
 /*==============================================================*/
 create table SUBJECT
 (
    subjectId           int not null AUTO_INCREMENT,
+   majorId             int not null,
    subjectName         varchar(50) not null,
    primary key (subjectId)
 );
@@ -82,8 +111,17 @@ create table USER
 alter table EXAM add constraint FK_USER_CO_EXAM foreign key (userId)
       references USER (userId) on delete restrict on update restrict;
 
+alter table EXAM add constraint FK_EXAM_THUOC_SUBJECT foreign key (subjectId)
+      references SUBJECT (subjectId) on delete restrict on update restrict;
+
 alter table QUESTION add constraint FK_QUESTION_THUOC_SUBJECT foreign key (subjectId)
       references SUBJECT (subjectId) on delete restrict on update restrict;
+
+alter table SUBJECT add constraint FK_SUBJECT_THUOC_MAJOR foreign key (majorId)
+      references MAJOR (majorId) on delete restrict on update restrict;
+
+alter table MAJOR add constraint FK_MAJOR_THUOC_FACULTY foreign key (facultyId)
+      references FACULTY (facultyId) on delete restrict on update restrict;
 
 alter table TASK add constraint FK_EXAM_TASK foreign key (examId)
       references EXAM (examId) on delete restrict on update restrict;

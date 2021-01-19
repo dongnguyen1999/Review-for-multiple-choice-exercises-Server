@@ -20,17 +20,14 @@ include_once("../model/UserModel.php");
 // Register success response new inserted user info
 // Else return error message
 
-//if (!isset($_POST['type'])) echo "Không nhận được type";
-
 if(isset($_POST['type']) && $_POST['type'] == "register") {
-
     try {
 
         $user = new UserModel($_POST); // Map request data from $_POST
 
         $existUser = UserDAO::findByEmail($user->email);
         if ($existUser != null) {
-            echo ResponseData::ResponseFail("Email đã được sử dụng đăng ký tài khoảng");
+            echo ResponseData::ResponseFail("Email đã được sử dụng đăng ký tài khoản");
             die();
         }
 
@@ -50,6 +47,47 @@ if(isset($_POST['type']) && $_POST['type'] == "register") {
     }
 
 }
+
+
+//url: http://hostname/api/user.php
+//POST - formdata
+// {
+//    'type': 'edit',
+//    'userId': '1', // for identify editing user
+//    //Optional
+//    'password': 'meomeo', //use default password if password is null, default password: hashmd5('social-media-user')
+//    'name': 'Full name',
+//    'avatar': 'base64encodedimage'
+//    'phone': '0334007127',
+//    'email': 'nvdkg1999@gmail.com',
+// }
+//
+// Register an user account
+// Register success response new inserted user info
+// Else return error message
+
+if(isset($_POST['type']) && $_POST['type'] == "edit") {
+    try {
+
+        $user = new UserModel($_POST); // Map request data from $_POST, include 'userId'
+
+        $user->saveUserAvatar();
+
+        $user = UserDAO::save($user); // update exist user with post data
+
+        if ($user != null) {
+            unset($user->password);
+            echo ResponseData::ResponseSuccess('Sửa thông tin thành công', $user);
+        } else {
+            echo ResponseData::ResponseFail("Lỗi trong hệ thống, vui lòng thử lại sau");
+        }
+
+    } catch(Exception $e) {
+        echo ResponseData::ResponseFail("Sửa thông tin thất bại: $e");
+    }
+
+}
+
 
 //url: http://hostname/api/user.php
 //GET
@@ -78,3 +116,24 @@ if(isset($_GET['type']) && $_GET['type'] == "list"){
     echo ResponseData::ResponseSuccess('Truy vấn người dùng thành công', $data);
 }
 
+//url: http://hostname/api/login.php
+//GET
+//{
+//    'type': 'login',
+//    'email': 'email@com',
+//    'password': 'meomeo'
+//}
+// Login success response user info
+// Else response error message
+if(isset($_GET['type']) && $_GET['type'] == "login"){
+    $email = trim($_GET['email']);
+    $password = trim($_GET['password']);
+
+    if($email != "" && $password != "") {
+        $user = UserDAO::findByEmailPassword($email, $password);
+        if ($user != null) {
+            unset($user->password);
+            echo ResponseData::ResponseSuccess('Đăng nhập thành công', $user);
+        } else echo ResponseData::ResponseFail("Tên tài khoản hoặc mật khẩu không chính xác");
+    } else echo ResponseData::ResponseFail("Nhập vào đầy đủ tài khoản và mật khẩu");
+}

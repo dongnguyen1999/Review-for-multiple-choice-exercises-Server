@@ -1,8 +1,8 @@
 
 <?php
 	define("DBSERVER", "localhost");
-	define("DBUSERNAME", "root");
-	define("DBPASSWORD", "");
+	define("DBUSERNAME", "ndong");
+	define("DBPASSWORD", "ndong1999");
 	define("DBNAME", "testdb");
 
 	date_default_timezone_set("Asia/Ho_Chi_Minh");

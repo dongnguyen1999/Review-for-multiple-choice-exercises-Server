@@ -6,7 +6,7 @@ class QuestionDAO
 {
     public static function findById($id){
         global $conn;
-        $sql = "SELECT * FROM question WHERE questionId = '$id'";
+        $sql = "SELECT * FROM QUESTION WHERE questionId = '$id'";
         $res = $conn->query($sql);
         if ($res->num_rows > 0) {
             return new QuestionModel($res->fetch_assoc());
@@ -16,7 +16,7 @@ class QuestionDAO
     public static function findAll(){
         global $conn;
         $data = array();
-        $sql = "SELECT * FROM question";
+        $sql = "SELECT * FROM QUESTION";
         $res = $conn->query($sql);
         while ($row = mysqli_fetch_assoc($res)) {
             array_push($data, new QuestionModel($row));
@@ -27,7 +27,7 @@ class QuestionDAO
     public static function findAllBySubjectId($subjectId) {
         global $conn;
         $data = array();
-        $sql = "SELECT * FROM question WHERE SUBJECTID = '$subjectId'";
+        $sql = "SELECT * FROM QUESTION WHERE subjectId = '$subjectId'";
         $res = $conn->query($sql);
         while ($row = mysqli_fetch_assoc($res)) {
             array_push($data, new QuestionModel($row));
@@ -38,7 +38,7 @@ class QuestionDAO
     public static function findAllByExamId($examId) {
         global $conn;
         $data = array();
-        $sql = "SELECT * FROM TASK WHERE EXAMID = '$examId'";
+        $sql = "SELECT * FROM TASK WHERE examId = '$examId'";
         $res = $conn->query($sql);
         while ($row = $res->fetch_assoc()) { // for each row in task table selected where examid
             $task = new TaskModel($row);

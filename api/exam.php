@@ -8,15 +8,19 @@ session_start();
 
 //url: http://hostname/api/exam.php
 //GET
-//{
+// {
 //    "type": "list",
-//
+
 //    //Optional
 //    //Give just one of below
 //    'userId': '1', // Get exam detail by owner user
 //    'examId': '1', //Get one exam detail by its id
+
+//    //Optional filter
+//    'subjectId': '1' //List exam with subject id
+
 //    //Else all exam
-//}
+// }
 
 // List all exam detail: by id, by userid, all
 if(isset($_GET['type']) && $_GET['type'] == "list") {
@@ -29,10 +33,19 @@ if(isset($_GET['type']) && $_GET['type'] == "list") {
     } else if (isset($_GET['userId'])) {
         // list all exam of user by userid
         $userId = $_GET['userId'];
-        $data = ExamDAO::findAllByUserId($userId);
+
+        if (isset($_GET['subjectId'])) {
+            $subjectId = $_GET['subjectId'];
+            $data = ExamDAO::findAllByUserIdAndSubjectId($userId, $subjectId);
+        }
+        else $data = ExamDAO::findAllByUserId($userId);
     } else {
         // list all exam
-        $data = ExamDAO::findAll();
+        if (isset($_GET['subjectId'])) {
+            $subjectId = $_GET['subjectId'];
+            $data = ExamDAO::findAllBySubjectId($subjectId);
+        }
+        else $data = ExamDAO::findAll();
     }
 
     echo ResponseData::ResponseSuccess('Truy vấn bài kiểm tra thành công', $data);
@@ -41,35 +54,29 @@ if(isset($_GET['type']) && $_GET['type'] == "list") {
 
 //url: http://hostname/api/exam.php
 //POST
-//{
+// {
 //    "type": "openNew",
+//    'userId': '1', // userid of the owner
 //    'subjectId': '1', //subject of the new exam
-//
+
 //    //Optional
-//    'duration': '45', // Duration of the new exam, duration is nullable
-//}
+//    'duration': '45', // Duration of the new exam in minute, default is 30
+//    'nbQuestion': '20', // Number of questions in the new exam, default is 20
+// }
 
 // Create a new exam with fixed number of question of a subject;
 if(isset($_POST['type']) && $_POST['type'] == "openNew") {
     try {
-        if (isset($_SESSION['email'])) {
-            //Select userId by email
-            $email = $_SESSION['email'];
-            $user = UserDAO::findByEmail($email);
-
-            //Map request data from $_POST
-            $exam = new ExamModel($_POST);
-            $exam->userId = $user->userId; //add userId - this exam's owner
-            $exam = ExamDAO::openNew($exam); //open exam with request data
-            if ($exam != null) {
-                echo ResponseData::ResponseSuccess('Tạo bài kiểm tra mới thành công', $exam);
-            } else {
-                echo ResponseData::ResponseFail("Lỗi tạo bài kiểm tra, vui lòng thử lại");
-            }
-
+        //Map request data from $_POST
+        $exam = new ExamModel($_POST);
+        $exam = ExamDAO::openNew($exam); //open exam with request data
+        if ($exam != null) {
+            echo ResponseData::ResponseSuccess('Tạo bài kiểm tra mới thành công', $exam);
         } else {
-            ResponseData::ResponseFail("API yêu cầu người dùng đăng nhập");
+            echo ResponseData::ResponseFail("Lỗi tạo bài kiểm tra, vui lòng thử lại");
         }
+
+    
     } catch(Exception $e) {
         echo ResponseData::ResponseFail("Tạo bài kiểm tra thất bại: $e");
     }

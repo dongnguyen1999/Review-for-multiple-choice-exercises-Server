@@ -27,7 +27,8 @@ class UserModel
         if ($this->avatar != null) {
             $imgId = rand();
             $email = $this->email;
-            $avatarFileName = "$email$imgId.png";
+            if ($email == null) $email = $this->userId;
+            $avatarFileName = "$email-$imgId.png";
             $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->avatar));
             file_put_contents("../data/avatar/$avatarFileName", $data);
             $this->avatar = "/data/avatar/$avatarFileName";
