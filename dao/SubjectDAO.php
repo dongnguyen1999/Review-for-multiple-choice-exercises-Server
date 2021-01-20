@@ -13,6 +13,17 @@ class SubjectDAO
         } else return null;
     }
 
+    public static function findByIds($ids){
+        global $conn;
+        $data = array();
+        
+        foreach ($ids as $id) {
+            array_push($data, SubjectDAO::findById($id));
+        } 
+
+        return $data;
+    }
+
     public static function findByMajorId($majorId){
         global $conn;
         $data = array();

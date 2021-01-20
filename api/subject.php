@@ -9,6 +9,11 @@ include_once("../model/ResponseData.php");
 
 //    //Optional
 //    'subjectId': '1' // Get one subject info with its id
+//    //Or
+//    'subjectIds[]': '1'
+//    'subjectIds[]': '2'
+//    'subjectIds[]': '3'
+
 //    'majorId': '1' // List all subject in a major
 //    'facultyId': '1' // List all subjec in a faculty
 // }
@@ -20,6 +25,9 @@ if(isset($_GET['type']) && $_GET['type'] == "list") {
     if (isset($_GET['subjectId'])) {
         $subjectId = $_GET['subjectId'];
         $data = SubjectDAO::findById($subjectId);
+    } else if (isset($_GET['subjectIds'])) {
+        $subjectIds = $_GET['subjectIds'];
+        $data = SubjectDAO::findByIds($subjectIds);
     } else if (isset($_GET['majorId'])) {
         $majorId = $_GET['majorId'];
         $data = SubjectDAO::findByMajorId($majorId);
