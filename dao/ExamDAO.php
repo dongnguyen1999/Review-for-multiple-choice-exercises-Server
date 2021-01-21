@@ -3,6 +3,7 @@ include_once ("../model/ExamModel.php");
 include_once ("../dao/UserDAO.php");
 include_once ("../dao/QuestionDAO.php");
 include_once ("../dao/FacultyDAO.php");
+include_once ("../dao/SubjectDAO.php");
 
 class ExamDAO
 {
@@ -18,12 +19,14 @@ class ExamDAO
     public static function findAllByUserId($userId) {
         global $conn;
         $data = array();
-        $sql = "SELECT * FROM EXAM WHERE userId = '$userId'";
+        $sql = "SELECT * FROM EXAM WHERE userId = '$userId' ORDER BY createDate DESC";
         $res = $conn->query($sql);
         while ($row = mysqli_fetch_assoc($res)) {
             $exam = new ExamModel($row);
             $faculty = FacultyDAO::findBySubjectId($exam->subjectId);
+            $subject = SubjectDAO::findById($exam->subjectId);
             $exam->facultyName = $faculty->facultyName;
+            $exam->subjectName = $subject->subjectName;
             array_push($data, $exam);
         }
         return $data;
