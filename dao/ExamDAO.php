@@ -2,6 +2,7 @@
 include_once ("../model/ExamModel.php");
 include_once ("../dao/UserDAO.php");
 include_once ("../dao/QuestionDAO.php");
+include_once ("../dao/FacultyDAO.php");
 
 class ExamDAO
 {
@@ -20,7 +21,10 @@ class ExamDAO
         $sql = "SELECT * FROM EXAM WHERE userId = '$userId'";
         $res = $conn->query($sql);
         while ($row = mysqli_fetch_assoc($res)) {
-            array_push($data, new ExamModel($row));
+            $exam = new ExamModel($row);
+            $faculty = FacultyDAO::findBySubjectId($exam->subjectId);
+            $exam->facultyName = $faculty->facultyName;
+            array_push($data, $exam);
         }
         return $data;
     }
