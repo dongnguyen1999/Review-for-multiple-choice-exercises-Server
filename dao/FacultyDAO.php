@@ -1,5 +1,7 @@
 <?php
 include_once ("../model/FacultyModel.php");
+include_once ("../dao/MajorDAO.php");
+include_once ("../dao/SubjectDAO.php");
 
 class FacultyDAO
 {
@@ -10,6 +12,14 @@ class FacultyDAO
         if ($res->num_rows > 0) {
             return new FacultyModel($res->fetch_assoc());
         } else return null;
+    }
+
+    public static function findBySubjectId($id){
+        global $conn;
+
+        $subject = SubjectDAO::findById($id);
+        $major = MajorDAO::findById($subject->majorId);
+        return FacultyDAO::findById($major->facultyId);
     }
 
     public static function findAll(){
