@@ -133,3 +133,23 @@ if(isset($_POST['type']) && $_POST['type'] == "submit") {
 }
 
 
+//url: http://hostname/api/exam.php
+//POST
+// {
+//    "type": "cancel",
+//    'examId': '1', // testId of the exam that will be canceled
+// }
+
+// Cancel a temporaty generated exam
+if(isset($_POST['type']) && $_POST['type'] == "cancel") {
+    try {
+        $examId = $_POST['examId'];
+        if (ExamDAO::deleteById($examId)) {
+            echo ResponseData::ResponseSuccess('Huỷ bài kiểm tra thành công', 'OK!');
+        } else {
+            echo ResponseData::ResponseFail("Lỗi xảy ra khi huỷ bài kiểm tra, vui lòng thử lại");
+        }
+    } catch(Exception $e) {
+        echo ResponseData::ResponseFail("Huỷ bài kiểm tra thất bại: $e");
+    }
+}

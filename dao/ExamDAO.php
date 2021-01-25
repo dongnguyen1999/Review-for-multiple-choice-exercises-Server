@@ -142,4 +142,16 @@ class ExamDAO
             return ExamDAO::findById($examId);
         } else return null;
     }
+
+    public static function deleteById($examId) {
+        global $conn;
+        $sql = "DELETE FROM TASK WHERE examId = '$examId'";
+        if ($conn->query($sql) == true) {
+            $sql = "DELETE FROM EXAM WHERE examId = '$examId'";
+            return ($conn->query($sql) == true);
+        }
+        return false;
+    }
+
+
 }
