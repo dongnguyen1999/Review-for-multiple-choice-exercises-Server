@@ -112,9 +112,14 @@ class ExamDAO
     public static function updateTask($task) {
         global $conn;
         $answerTask = $task->answerTask;
+        if ($answerTask == null) {
+            $answerTask = "@answerNull";
+        }
         $examId = $task->examId;
         $questionId = $task->questionId;
         $sql = "UPDATE TASK SET answerTask = '$answerTask' WHERE examId = '$examId' AND questionId = '$questionId'";
+        $sql = str_replace("'@answerNull'", "NULL", $sql);
+        // echo $sql;
 
         if ($conn->query($sql) === true) {// update task success
             $sql = "SELECT * FROM TASK WHERE examId = '$examId' AND questionId = '$questionId'";

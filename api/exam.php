@@ -84,12 +84,14 @@ if(isset($_POST['type']) && $_POST['type'] == "openNew") {
 
 //url: http://hostname/api/exam.php
 //POST
-//{
+// {
 //    "type": "answerQuestion",
 //    'examId': '1', // id of the exam will be changed
 //    'questionId': '1', // id of question in exam will be answered
+
+//    //Optional
 //    'answerTask': '1', // the user answer in [1,2,3,4]
-//}
+// }
 
 // Answer a question in an exam with 1,2,3,4 as answer
 
