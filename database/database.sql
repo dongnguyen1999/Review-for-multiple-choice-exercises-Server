@@ -30,6 +30,7 @@ create table EXAM
    duration                 int not null,
    nbQuestion               int not null,
    score                    float,
+   isImportant              tinyint(1) not null default 0,
    primary key (examId)
 );
 

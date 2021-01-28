@@ -158,5 +158,14 @@ class ExamDAO
         return false;
     }
 
+    public static function markImportant($examId, $isImportant) {
+        global $conn;
+        $sql = "UPDATE EXAM SET isImportant = '$isImportant' WHERE examId = '$examId'";
+
+        if ($conn->query($sql) == true) {
+            return ExamDAO::findById($examId);
+        } else return null;
+        
+    }
 
 }

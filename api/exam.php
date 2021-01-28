@@ -155,3 +155,28 @@ if(isset($_POST['type']) && $_POST['type'] == "cancel") {
         echo ResponseData::ResponseFail("Huỷ bài kiểm tra thất bại: $e");
     }
 }
+
+//url: http://hostname/api/exam.php
+//POST
+// {
+//    "type": "markImportant",
+//    'examId': '1', // examId of the exam that will be mark important or not
+
+//    'isImportant': [0, 1] // flag show if the exam is important or not
+// }
+
+// Cancel a temporaty generated exam
+if(isset($_POST['type']) && $_POST['type'] == "markImportant") {
+    try {
+        $examId = $_POST['examId'];
+        $isImportant = $_POST['isImportant'];
+        $exam = ExamDAO::markImportant($examId, $isImportant);
+        if ($exam != null) {
+            echo ResponseData::ResponseSuccess('Đánh dấu bài kiểm tra quan trọng thành công', $exam);
+        } else {
+            echo ResponseData::ResponseFail("Lỗi xảy ra khi đánh dấu quan trọng bài kiểm tra, vui lòng thử lại");
+        }
+    } catch(Exception $e) {
+        echo ResponseData::ResponseFail("Đánh dấu bài kiểm tra quan trọng thất bại: $e");
+    }
+}
