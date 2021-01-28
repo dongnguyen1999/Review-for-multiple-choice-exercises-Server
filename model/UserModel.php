@@ -15,7 +15,7 @@ class UserModel
 
     public function __construct($data) {
         $this->userId = isset($data['userId'])? $data['userId']: null;
-        $this->email = $data['email'];
+        $this->email = isset($data['email'])? $data['email']: null;
         $this->password = isset($data['password'])? $data['password']: UserModel::$DEFAULT_PASSWORD;
         $this->name = isset($data['name'])? $data['name']: null;
         $this->avatar = isset($data['avatar'])? $data['avatar']: null;
