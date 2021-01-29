@@ -25,17 +25,18 @@ class UserModel
     public function saveUserAvatar() {
         // Save user avatar image
         if ($this->avatar != null) {
-            $imgId = rand();
+            $picture = $this->avatar;
             $email = $this->email;
             if ($email == null) $email = $this->userId;
-            $avatarFileName = "$email-$imgId.png";
-            $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->avatar));
+            $avatarFileName = time().".png";
+            // $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $this->avatar));
+            $data = str_replace('data:image/png;base64,', '', $picture);
+            $data = str_replace(' ', '+', $data);
+            $data = base64_decode($data);
             file_put_contents("../data/avatar/$avatarFileName", $data);
             $this->avatar = "/data/avatar/$avatarFileName";
         }
     }
-
 }
 
 UserModel::$DEFAULT_PASSWORD = hash('md5', 'social-media-user');
-
