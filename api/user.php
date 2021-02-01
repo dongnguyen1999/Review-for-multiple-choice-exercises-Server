@@ -4,9 +4,9 @@ include_once("../dao/UserDAO.php");
 include_once("../model/ResponseData.php");
 include_once("../model/UserModel.php");
 
-//url: http://hostname/api/user.php
-//POST - formdata
-//{
+// url: http://hostname/api/user.php
+// POST - formdata
+// {
 //    'type': 'register',
 //    'email': 'nvdkg1999@gmail.com',
 //    //Optional
@@ -14,8 +14,8 @@ include_once("../model/UserModel.php");
 //    'name': 'Full name',
 //    'avatar': 'base64encodedimage'
 //    'phone': '0334007127',
-//}
-//
+// }
+
 // Register an user account
 // Register success response new inserted user info
 // Else return error message
