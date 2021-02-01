@@ -31,6 +31,9 @@ if(isset($_POST['type']) && $_POST['type'] == "register") {
             die();
         }
 
+        if ($user->password == null) {
+            $user->password = UserModel::$DEFAULT_PASSWORD;
+        }
         $user->saveUserAvatar();
 
         $user = UserDAO::save($user); // insert new user with post data
