@@ -141,7 +141,7 @@ class ExamDAO
             }
         }
 
-        $sql = "UPDATE EXAM SET score = '$trueQuestionCount' WHERE examId = '$examId'";
+        $sql = "UPDATE EXAM SET score = '$trueQuestionCount', closeDate = current_timestamp() WHERE examId = '$examId'";
 
         if ($conn->query($sql) == true) {
             return ExamDAO::findById($examId);
