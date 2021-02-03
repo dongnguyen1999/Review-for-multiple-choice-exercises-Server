@@ -12,7 +12,12 @@ class ExamDAO
         $sql = "SELECT * FROM EXAM WHERE examId = '$id'";
         $res = $conn->query($sql);
         if ($res->num_rows > 0) {
-            return new ExamModel($res->fetch_assoc());
+            $exam = new ExamModel($res->fetch_assoc());
+            $faculty = FacultyDAO::findBySubjectId($exam->subjectId);
+            $subject = SubjectDAO::findById($exam->subjectId);
+            $exam->facultyName = $faculty->facultyName;
+            $exam->subjectName = $subject->subjectName;
+            return $exam;
         } else return null;
     }
 

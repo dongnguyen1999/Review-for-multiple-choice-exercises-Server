@@ -1,7 +1,7 @@
 
 <?php
 	define("DBSERVER", "localhost");
-	define("DBUSERNAME", "ndong");
+	define("DBUSERNAME", "root");
 	define("DBPASSWORD", "ndong1999");
 	define("DBNAME", "testdb");
 
