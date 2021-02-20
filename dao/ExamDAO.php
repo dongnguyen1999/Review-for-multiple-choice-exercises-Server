@@ -153,6 +153,21 @@ class ExamDAO
         } else return null;
     }
 
+    //Start the exam, set start time
+    public static function start($examId) {
+        global $conn;
+        
+        $exam = ExamDAO::findById($examId);
+
+        $duration = $exam->duration;
+
+        $sql = "UPDATE EXAM SET createDate = current_timestamp(), closeDate = current_timestamp() + INTERVAL $duration MINUTE WHERE examId = '$examId'";
+
+        if ($conn->query($sql) == true) {
+            return ExamDAO::findById($examId);
+        } else return null;
+    }
+
     public static function deleteById($examId) {
         global $conn;
         $sql = "DELETE FROM TASK WHERE examId = '$examId'";

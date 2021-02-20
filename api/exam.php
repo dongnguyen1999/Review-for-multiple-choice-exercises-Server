@@ -84,6 +84,30 @@ if(isset($_POST['type']) && $_POST['type'] == "openNew") {
 
 //url: http://hostname/api/exam.php
 //POST
+//{
+//    "type": "start",
+//    'examId': '1', // id of the exam will be started
+//}
+
+// Start the exam
+if(isset($_POST['type']) && $_POST['type'] == "start") {
+    try {
+        $examId = $_POST['examId'];
+
+        $exam = ExamDAO::start($examId);
+
+        if ($exam != null) {
+            echo ResponseData::ResponseSuccess('Bắt đầu bài kiểm tra thành công', $exam);
+        } else {
+            echo ResponseData::ResponseFail("Có lỗi xảy ra trong quá trình bắt đầu, vui lòng thử lại");
+        }
+    } catch(Exception $e) {
+        echo ResponseData::ResponseFail("Xảy ra lỗi trong quá trình bắt đầu: $e");
+    }
+}
+
+//url: http://hostname/api/exam.php
+//POST
 // {
 //    "type": "answerQuestion",
 //    'examId': '1', // id of the exam will be changed
@@ -94,7 +118,6 @@ if(isset($_POST['type']) && $_POST['type'] == "openNew") {
 // }
 
 // Answer a question in an exam with 1,2,3,4 as answer
-
 if(isset($_POST['type']) && $_POST['type'] == "answerQuestion") {
     try {
         $task = new TaskModel($_POST);
@@ -117,7 +140,6 @@ if(isset($_POST['type']) && $_POST['type'] == "answerQuestion") {
 //}
 
 // Submit the exam and compute score
-
 if(isset($_POST['type']) && $_POST['type'] == "submit") {
     try {
         $examId = $_POST['examId'];
